@@ -1,11 +1,9 @@
-//Axios: Como usar para optimizar el código de Michis App
-
-const api = axios.create({ //Crear instancia de axios con la url base de thecatapi
+const api = axios.create({
     baseURL: 'https://api.thecatapi.com/v1',
   });
 
 const MY_API_KEY = 'live_qL4SMY2yMORz7txSI2tYPqo7d44B1OA5IK1cZqcuWzrfHLfFdCSE11KrsVO0nG0Q';
-api.defaults.headers.common['x-api-key'] = MY_API_KEY; //usar los métodos de axios para definir el header de autorización
+api.defaults.headers.common['x-api-key'] = MY_API_KEY;
 
 const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2';
 const API_URL_FAVS = 'https://api.thecatapi.com/v1/favourites';
@@ -16,12 +14,12 @@ const catBtn = document.getElementById('catBtn');
 const spanError = document.getElementById('error');
 
 async function loadRandomCats(){ 
-    const res = await fetch(API_URL_RANDOM); //Guardamos la respuesta de la promesa fetch en una var res, y le ponemos await para esperar la respuesta
+    const res = await fetch(API_URL_RANDOM);
     
-    if(res.status !== 200){ //Validar si hubo un error, y cambiar el span para avisar al usuario
+    if(res.status !== 200){
         spanError.innerHTML = "Hubo un error: " + res.status + " " + await res.text();
-    } else{ //Si no hay ningún error, cargar las imágenes
-        const data = await res.json(); //Guardamos en data la respuesta de json. data tiene toda la información que viene de la API en estructura JSON, pero si genera error antes, data no funciona
+    } else{ 
+        const data = await res.json();
         const img1 = document.getElementById("cat1");
         const img2 = document.getElementById("cat2");
         const img3 = document.getElementById("cat3");
@@ -35,7 +33,7 @@ async function loadRandomCats(){
         img3.src=data[2].url;
         img4.src=data[3].url;
 
-        btn1.onclick = () => saveFavCat(data[0].id); //Usamos arrow function por que si no, savFavCat se ejecuta sola, sin darle click al boton.
+        btn1.onclick = () => saveFavCat(data[0].id);
         btn2.onclick = () => saveFavCat(data[1].id);
         btn3.onclick = () => saveFavCat(data[2].id);
         btn4.onclick = () => saveFavCat(data[3].id);
@@ -52,14 +50,14 @@ async function loadFavCats(){
         }
     });
     
-    if(res.status !== 200){ //Validar si hubo un error, y cambiar el span para avisar al usuario
+    if(res.status !== 200){
         spanError.innerHTML = "Hubo un error: " + res.status + " " + await res.text();
     } else{
         const data = await res.json();
         console.log('Favs:');
         console.log(data);
         const section = document.getElementById('favMichis');
-        section.innerHTML = ""; //Vaciamos la sección para que cuando recargue con la función loadFavCats dentro de saveFav o delete, no se repitan las imágenes, y no toque recargar la pg.
+        section.innerHTML = "";
        
 
         data.forEach(michi => {
@@ -86,33 +84,20 @@ async function loadFavCats(){
 }
 
 async function saveFavCat(id){
-    //Axios
-    const {data, status} = await api.post('/favourites', { //En vez de pasar todos los datos (method, headers, post), se usa el método de axios con los parámetros: 1. parte adicional de la url.
-        image_id: id,    // 2. Contenido del body sin stringify, axios lo hace. Y ya no toca usar res.json(), y el objeto ya trae a data y status
-    }); 
-    /*
-    const res = await fetch(API_URL_FAVS, { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': MY_API_KEY,
-        },
-        body: JSON.stringify({
-            image_id: id,
-        }),
+    
+    const {data, status} = await api.post('/favourites', { 
+        image_id: id,
     });
-    const data = await res.json();
-*/
     
     if(status !== 200){ 
         spanError.innerHTML = "Hubo un error: " + status + " " + data.message;
     } else {
         console.log('Cat saved to favorites');
-        loadFavCats(); //Se llama de nuevo a la función para que recargue automáticamente los favoritos.
+        loadFavCats(); 
     }
 }
 
-const API_URL_DEL_FAVS = (id) => `https://api.thecatapi.com/v1/favourites/${id}`; //Usamos arrow function para hacer la url dinámica, y ponerle el id del que queremos borrar
+const API_URL_DEL_FAVS = (id) => `https://api.thecatapi.com/v1/favourites/${id}`; 
 
 async function deleteFavCat(id) {    
     const res = await fetch(API_URL_DEL_FAVS(id), {
@@ -129,15 +114,15 @@ async function deleteFavCat(id) {
     }  
 }
 
-async function uploadCatPic() { //Usaremos el superprototipo FormData
+async function uploadCatPic() { 
     const form = document.getElementById('uploadForm');
-    const formData = new FormData(form); //Toma todos los inputs del form, y los guarda en el nuevo objeto creado con el prototipo
+    const formData = new FormData(form);
     console.log(formData.get('file'));
 
     const res = await fetch(API_URL_UPLOAD, {
         method: 'POST',
         headers: {
-            //'Content-Type': 'multipart/form-data', //No es necesario usarla, ya que al pasarle el formData, el fetch automáticamente entiende el tipo de datos
+            
             'x-api-key': MY_API_KEY,
         },
         body: formData,
@@ -152,7 +137,3 @@ async function uploadCatPic() { //Usaremos el superprototipo FormData
 }
 
 loadFavCats();
-
-//Sigue: 
-// 1. Mejorar el diseño para que quede un grid parejo: Done
-// 2. Preview de la miniatura de la foto a subir
