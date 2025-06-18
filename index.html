@@ -1,96 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-    <title>Vercel HTML Starter</title>
-    <meta
-      name="description"
-      content="High-performance HTML based website template."
-    />
-  </head>
-  <body>
-    <h1>Vercel HTML Starter</h1>
-    <p>
-      This template is a simple, but powerful single
-      <code>index.html</code> file deployed to
-      <a href="https://vercel.com">Vercel</a>. When your site is deployed, all
-      static assets (like HTML, JavaScript, CSS, images, and more) are deployed
-      globally to every
-      <a href="https://vercel.com/docs/concepts/edge-network/overview"
-        >Vercel Edge Network</a
-      >
-      region.
-    </p>
-    <h2>Simple, privacy-friendly analytics</h2>
-    <p>
-      Want to understand your visitor traffic? Vercel Analytics gives you
-      first-party, privacy-friendly traffic analytics for your HTML site. This
-      template is already configured using the following script:
-    </p>
-    <pre><code>&lt;script defer src="/_vercel/insights/script.js"&gt;&lt;/script&gt;</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/analytics">Vercel Analytics</a>.
-    </p>
-    <h2>Integrated with git</h2>
-    <p>
-      Deploying updates to your site is as simple as
-      <code>git push</code> thanks to Vercel's advanced
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-      Support for GitHub, GitLab, Bitbucket is zero-configuration, and with the
-      flexible Vercel CLI and API, you can integrate with any tool possible.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-    </p>
-    <h2>Fast <code>gzip</code> compression</h2>
-    <p>
-      To help ensure the smallest possible file sizes for your static assets,
-      the Vercel Edge Network compresses files by default using
-      <code>gzip</code>. You can also optionally use
-      <code>brotli</code> compressesion if you prefer.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/edge-network/compression"
-        >compression</a
-      >.
-    </p>
-    <h2>Advanced routing configuration</h2>
-    <p>
-      Vercel gives you a variety of ways to configure the routing of your
-      website. For example, adding redirects, rewrites, or headers to your page.
-      While you can use <code>vercel.json</code> to define these through JSON,
-      you can also express your routing configuration as code using
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-    <p>
-      Middleware runs before the
-      <a href="https://vercel.com/docs/concepts/edge-network/caching"
-        >Vercel Edge Network Cache</a
-      >, so you can configure routing exactly as your application needs. For
-      example, this template uses <code>middleware.js</code> defined in the root
-      of the repository to add additional security headers to the site:
-    </p>
-    <pre><code>referrer-policy: origin-when-cross-origin
-strict-transport-security: max-age=31536000; includeSubDomains; preload
-x-content-type-options: nosniff
-x-dns-prefetch-control: on
-x-frame-options: DENY</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-  </body>
-</html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API REST TheCatAPI con JavaScript</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="Axios.js"></script>
+    <link href="./output.css" rel="stylesheet">
+</head>
+<body class="bg-linear-65 from-violet-700 to-fuchsia-700" onload="loadRandomCats()">
+  <main>
+    <div class="flex flex-col items-center">
+      <h1 class="text-7xl font-bold mt-10 ">Michis App</h1>
+      <span id="error"></span>
+    </div> 
+    <div class="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <section id="randomMichis">
+        <div class="flex flex-col items-center">
+          <h2 class='text-5xl mb-3 bg-[url(./icons/random.png)]'>Random Cats</h2>
+          <button id="catBtn" class="bg-lime-500 hover:bg-blue-500/50 rounded px-4 py-2 m-3 mb-7" title="Click For Random Cats!">
+            <img src="./icons/paw.png" alt="click for random cats" class="w-8 h-8">
+          </button>
+        </div>
+        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          <div class="flex flex-col items-center">
+            <img id="cat1" 
+            alt="Random Cat Pics" 
+            class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+            <button id="btn1" title="Add To Favorites" class="bg-teal-500 hover:bg-blue-500/75 rounded px-5 py-2 m-5 text-indigo-100">
+              <img src="./icons/add-to-favorites.png" alt="add to favorites" class="w-8 h-8">
+            </button>
+          </div>
+          <div class="flex flex-col items-center">
+            <img id="cat2" 
+            alt="Random Cat Pics" 
+            class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+            <button id="btn2" title="Add To Favorites" class="bg-teal-500 hover:bg-blue-500/75 rounded px-5 py-2 m-5 text-indigo-100">
+              <img src="./icons/add-to-favorites.png" alt="add to favorites" class="w-8 h-8">
+            </button>
+          </div>
+          <div class="flex flex-col items-center">
+            <img id="cat3"
+            alt="Random Cat Pics" 
+            class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+            <button id="btn3" title="Add To Favorites" class="bg-teal-500 hover:bg-blue-500/75 rounded px-5 py-2 m-5 text-indigo-100">
+              <img src="./icons/add-to-favorites.png" alt="add to favorites" class="w-8 h-8">
+            </button>
+          </div>
+          <div class="flex flex-col items-center">
+            <img id="cat4"
+            alt="Random Cat Pics" 
+            class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8">
+            <button id="btn4" title="Add To Favorites" class="bg-teal-500 hover:bg-blue-500/75 rounded px-5 py-2 m-5 text-indigo-100">
+              <img src="./icons/add-to-favorites.png" alt="add to favorites" class="w-8 h-8">
+            </button>
+          </div>
+        </div>
+      </section>
+      <h2 class="text-5xl justify-self-center mt-15">Favorite Cats</h2>
+      <section id="favMichis" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-10">
+        
+      </section>
+      <section id="uploadMichis" class="flex flex-col items-center mt-5">
+        <h2 class="text-3xl mb-3">Upload your Cats</h2>
+        <form id="uploadForm" class="flex items-center">
+            <input id="file" type="file" name="file" class="bg-indigo-200 rounded px-3 py-1">
+            <button type="button" onclick="uploadCatPic()" class="bg-teal-500 rounded px-5 py-1 m-2 text-indigo-200">
+                <img src="./icons/upload_image.png" title="Click to Upload Image" alt="upload image" class="w-8 h-8">
+            </button>
+        </form>
+      </section>
+    </div>
+  </main>
+</body>
